@@ -28,7 +28,7 @@ python webhook_bot.py
 
 You can modify these settings in `webhook_bot.py`:
 - `CHECK_INTERVAL`: How often to check for new posts (in seconds)
-- `NEWS_URL`: The MapleStory news page URL to monitor
+- `NEWS_API_URL`: The MapleStory news page URL to monitor (though this shouldn't need to be changed)
 
 ## Note
 
