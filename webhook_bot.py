@@ -12,7 +12,7 @@ load_dotenv()
 # Constants
 NEWS_API_URL = "https://g.nexonstatic.com/maplestory/cms/v1/news"
 CACHE_FILE = "news_cache.json"
-CHECK_INTERVAL = 15  # Check every 15 seconds
+CHECK_INTERVAL = 120  # Check every 120 seconds
 
 # Get webhook URL from environment variables
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
