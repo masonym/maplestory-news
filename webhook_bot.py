@@ -4,14 +4,20 @@ import os
 import time
 from datetime import datetime
 from dateutil import parser
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Constants
 NEWS_API_URL = "https://g.nexonstatic.com/maplestory/cms/v1/news"
 CACHE_FILE = "news_cache.json"
 CHECK_INTERVAL = 15  # Check every 15 seconds
 
-# Replace with your Discord webhook URL
+# Get webhook URL from environment variables
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
+if not WEBHOOK_URL:
+    raise ValueError("DISCORD_WEBHOOK_URL not found in environment variables")
 
 
 def load_cache():
@@ -23,7 +29,7 @@ def load_cache():
 
 def save_cache(cache):
     with open(CACHE_FILE, "w") as f:
-        json.dump(cache, f)
+        json.dump(cache, f, indent=2)
 
 
 def fetch_news():
@@ -48,6 +54,9 @@ def send_webhook(post):
     article_url = (
         f"https://www.nexon.com/maplestory/news/{post['category']}/{post['id']}"
     )
+    send_everyone = False
+    if post["category"] == "update":
+        send_everyone = True
 
     embed = {
         "title": post["name"],
@@ -65,7 +74,7 @@ def send_webhook(post):
         "thumbnail": {"url": image_url},
     }
 
-    data = {"embeds": [embed]}
+    data = {"embeds": [embed], "content": "@everyone" if send_everyone else None}
 
     try:
         response = requests.post(WEBHOOK_URL, json=data)
